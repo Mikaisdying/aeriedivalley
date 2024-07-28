@@ -12,11 +12,13 @@ const { handleWentByYourself, handleDirectionAck, handleDirectionChoice } = requ
 
 
 const userCharacters = new Map();
+const messageId = process.env.MESSAGE_ID;
+const categoryId = process.env.CATEGORY_ID;
+const roleId = process.env.ROLE_ID;
+
 
 async function handleReaction(client, reaction, user) {
-  const messageId = process.env.MESSAGE_ID;
-  const categoryId = process.env.CATEGORY_ID;
-  const roleId = process.env.ROLE_ID;
+
 
   try {
     if (reaction && reaction.message.id === messageId && reaction.emoji.name === '❓') {
@@ -64,6 +66,7 @@ async function handleReaction(client, reaction, user) {
           },
         ],
       });
+      
 
       const characters = ['Vitoria','Gilbert','Zircon'];
       let chosenCharacter = characters[Math.floor(Math.random() * characters.length)];
@@ -180,8 +183,8 @@ ${user}, bạn sẽ làm gì?
 async function handleStoryInteraction(interaction, user) {
   try {
     if (!interaction.isButton()) return;
-    const parts = interaction.customId.split('-');
-    const action = parts[0];
+    const userId = interaction.customId.split('-').pop();
+    const action = interaction.customId.replace(`-${userId}`, '');
 
 
     const followUpMessages = {
@@ -1365,19 +1368,31 @@ async function handleStoryInteraction(interaction, user) {
         await handleDirectionChoice(interaction, client);
       };
 
-      if (action === 'agree') {
-        const channel = interaction.channel;
-            await channel.permissionOverwrites.edit(interaction.user, {
-              SEND_MESSAGES: true,});
-      
-        const filter = m => m.author.id === user.id && new RegExp (`\\b${chosenCharacter.toLowerCase()}\\b`).test(m.content.trim().toLowerCase());
+    if (action === 'agree') {
+      const chosenCharacter = userCharacters.get(interaction.user.id);
+      const user = interaction.guild.members.cache.get(interaction.user.id);
+      const roleId = process.env.ROLE_ID;
+      const channel = interaction.channel;
+
+      if (!user) {
+        console.error(`User with ID ${interaction.user.id} not found.`);
+        return;
+      }
+
+        // Grant the user permission to send messages in the channel
+        await channel.permissionOverwrites.edit(interaction.user.id, {
+          SendMessages: true,
+        });
+
+        // Kiểm tra nếu người dùng đã gửi tin nhắn khớp với tên nhân vật của họ
+        const filter = m => m.author.id === userId && new RegExp (`\\b${chosenCharacter.toLowerCase()}\\b`).test(m.content.trim().toLowerCase());
         const collected = await channel.awaitMessages({ filter, max: 1 });
 
         if (collected.size > 0) {
           const role = interaction.guild.roles.cache.get(roleId);
           if (role) {
             await user.roles.add(role);
-
+// !!!Xong xóa role kẻ lưu lạc đi
             await interaction.channel.send({
               content: 'Bạn đã thành công trở thành cư dân của Aerie.',
               components: [],
@@ -1396,6 +1411,7 @@ async function handleStoryInteraction(interaction, user) {
         }
       }
     }
+
   } catch (error) {
     console.error('Interaction handling failed:', error);
     if (!interaction.replied && !interaction.deferred) {
