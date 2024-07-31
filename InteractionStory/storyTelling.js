@@ -1379,7 +1379,6 @@ async function handleStoryInteraction(interaction, user) {
         return;
       }
 
-        // Grant the user permission to send messages in the channel
         await channel.permissionOverwrites.edit(interaction.user.id, {
           SendMessages: true,
         });
