@@ -14,7 +14,6 @@ const { handleWentByYourself, handleDirectionAck, handleDirectionChoice } = requ
 const userCharacters = new Map();
 const messageId = process.env.MESSAGE_ID;
 const categoryId = process.env.CATEGORY_ID;
-const roleId = process.env.ROLE_ID;
 
 
 async function handleReaction(client, reaction, user) {
@@ -178,11 +177,13 @@ ${user}, bạn sẽ làm gì?
     content: message.content || '',
     components: message.components || []
   });
+
 }
 
 async function handleStoryInteraction(interaction, user) {
   try {
     if (!interaction.isButton()) return;
+    const chosenCharacter = userCharacters.get(interaction.user.id);
     const userId = interaction.customId.split('-').pop();
     const action = interaction.customId.replace(`-${userId}`, '');
 
@@ -1369,7 +1370,7 @@ async function handleStoryInteraction(interaction, user) {
       };
 
     if (action === 'agree') {
-      const chosenCharacter = userCharacters.get(interaction.user.id);
+      
       const user = interaction.guild.members.cache.get(interaction.user.id);
       const roleId = process.env.ROLE_ID;
       const channel = interaction.channel;
@@ -1383,29 +1384,28 @@ async function handleStoryInteraction(interaction, user) {
           SendMessages: true,
         });
 
-        // Kiểm tra nếu người dùng đã gửi tin nhắn khớp với tên nhân vật của họ
-        const filter = m => m.author.id === userId && new RegExp (`\\b${chosenCharacter.toLowerCase()}\\b`).test(m.content.trim().toLowerCase());
+        const filter = m => m.author.id === userId && new RegExp(`\\b${chosenCharacter.toLowerCase()}\\b`).test(m.content.trim().toLowerCase());
         const collected = await channel.awaitMessages({ filter, max: 1 });
 
         if (collected.size > 0) {
           const role = interaction.guild.roles.cache.get(roleId);
           if (role) {
             await user.roles.add(role);
-// !!!Xong xóa role kẻ lưu lạc đi
-            await interaction.channel.send({
+
+            await interaction.followUp({
               content: 'Bạn đã thành công trở thành cư dân của Aerie.',
               components: [],
             });
 
             //Gửi tin nhắn chuẩn bị xóa channel
-            await interaction.channel.send({
+            await interaction.followUp({
               content:'Cốt truyện đã kết thúc. Sau một chu kỳ mặt trời, cuộc gặp mặt này sẽ trở về với sa bàn của Thủ hộ giả.',
             });
             
             //Xóa kênh sau 24h
             setTimeout(async() => {await interaction.channel.delete('Xóa kênh sau 24h'); }, 24*60*60*1000);
           } else {
-            console.error(`Role with ID ${roleId} not found.`);
+            console.error('Role with ID ${roleId} not found.');
           }
         }
       }
