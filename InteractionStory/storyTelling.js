@@ -1384,7 +1384,7 @@ async function handleStoryInteraction(interaction, user) {
           SendMessages: true,
         });
 
-        const filter = m => m.author.id === userId && new RegExp(`\\b${chosenCharacter.toLowerCase()}\\b`).test(m.content.trim().toLowerCase());
+        const filter = m => m.author.id === interaction.user.id && new RegExp(`\\b${chosenCharacter.toLowerCase()}\\b`).test(m.content.trim().toLowerCase());
         const collected = await channel.awaitMessages({ filter, max: 1 });
 
         if (collected.size > 0) {
@@ -1398,7 +1398,7 @@ async function handleStoryInteraction(interaction, user) {
             });
 
             //Gửi tin nhắn chuẩn bị xóa channel
-            await interaction.followUp({
+            await interaction.send({
               content:'Cốt truyện đã kết thúc. Sau một chu kỳ mặt trời, cuộc gặp mặt này sẽ trở về với sa bàn của Thủ hộ giả.',
             });
             
