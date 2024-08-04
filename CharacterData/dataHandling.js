@@ -4,29 +4,56 @@ const db = new sqlite3.Database(path.resolve(__dirname, '../database.sqlite'));
 
 async function addCharacter(interaction) {
   const userId = interaction.user.id;
-  const commonName = interaction.options.getString('Tên chung');
-  const religiousName = interaction.options.getString('Pháp danh');
-  const innateAbility = interaction.options.getString('Sức mạnh bẩm sinh');
+  const commonName = interaction.options.getString('name');
+  const religiousName = interaction.options.getString('witch');
+  const innateAbility = interaction.options.getString('ability');
 
+  try {
+    await new Promise((resolve, reject) => {
+      db.serialize(() => {
+        db.run(`INSERT OR IGNORE INTO users (id) VALUES (?)`, [userId], (err) => {
+          if (err) {
+            return reject(err);
+          }
+        });
 
-  db.serialize(() => {
-    db.run(`INSERT OR IGNORE INTO users (id) VALUES (?)`, [userId]);
+        db.get(`SELECT COUNT(*) AS count FROM char WHERE religiousName = ?`, [religiousName], (err, row) => {
+          if (err) {
+            return reject(err);
+          }
 
-    db.run(`INSERT INTO char (userId, commonName, religiousName, innateAbility) VALUES (?, ?, ?, ?)`,
-      [userId, commonName, religiousName, innateAbility],
-      function (err) {
-        if (err) {
-          interaction.editReply({ content: 'There was an error adding your character.' });
-          console.error(err.message);
-        } else {
-          interaction.editReply({ content: 'Character added successfully!' });
-        }
+          if (row.count > 0) {
+            // religiousName đã tồn tại
+            return reject(new Error('Pháp danh đã tồn tại. Vui lòng chọn một pháp danh khác.'));
+          }
+
+          db.get(`SELECT COALESCE(MAX(orderNo), 0) + 1 AS newOrderNo FROM char WHERE userId = ?`, [userId], (err, row) => {
+            if (err) {
+              return reject(err);
+            }
+
+            const newOrderNo = row.newOrderNo;
+
+            db.run(`INSERT INTO char (userId, orderNo, commonName, religiousName, innateAbility) VALUES (?, ?, ?, ?, ?)`,
+              [userId, newOrderNo, commonName, religiousName, innateAbility],
+              function (err) {
+                if (err) {
+                  return reject(err);
+                }
+                resolve();
+              });
+          });
+        });
       });
-  });
-}
+    });
 
+    await interaction.editReply({ content: 'Character added successfully!' });
+  } catch (err) {
+    await interaction.editReply({ content: err.message || 'There was an error adding your character. Please try again later.' });
+    console.error(err.message);
+  }
+}
 
 module.exports = {
   addCharacter,
 };
-

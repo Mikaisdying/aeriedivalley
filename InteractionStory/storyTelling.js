@@ -1398,7 +1398,7 @@ async function handleStoryInteraction(interaction, user) {
             });
 
             //Gửi tin nhắn chuẩn bị xóa channel
-            await interaction.send({
+            await interaction.channel.send({
               content:'Cốt truyện đã kết thúc. Sau một chu kỳ mặt trời, cuộc gặp mặt này sẽ trở về với sa bàn của Thủ hộ giả.',
             });
             

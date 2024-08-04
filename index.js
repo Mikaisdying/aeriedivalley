@@ -37,10 +37,17 @@ client.once('ready', async () => {
   const CLIENT_ID = client.user.id;
   await clearCommands(CLIENT_ID, process.env.TOKEN);
   await registerCommands(CLIENT_ID, process.env.TOKEN);
+  await setupDatabase;
 });
 
 client.on('messageReactionAdd', (reaction, user) => handleReaction(client, reaction, user));
 
-client.on('interactionCreate', (interaction) => handleStoryInteraction(interaction, client));
+client.on('interactionCreate', async (interaction) => {
+  if (interaction.isCommand()) {
+    await handleCharacterInteraction(interaction);
+  } else if (interaction.isMessageComponent()) {
+    await handleStoryInteraction(interaction, client);
+  }
+});
 
 client.login(process.env.TOKEN);

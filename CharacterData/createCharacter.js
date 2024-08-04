@@ -3,25 +3,25 @@ const { addCharacter } = require('./dataHandling');
 
 const commands = [
   {
-    name: 'addcharacter',
-    description: 'Add a new character',
+    name: 'addcharacter', // Đảm bảo tất cả các ký tự là chữ thường và không có khoảng trắng
+    description: 'Ghi chú nhân vật của bạn.',
     options: [
       {
-        name: 'common_name',
+        name: 'name', // Đảm bảo tất cả các ký tự là chữ thường và không có khoảng trắng
         type: 3, // STRING
-        description: 'Common name of the character',
+        description: 'Tên thường gọi của nhân vật',
         required: true,
       },
       {
-        name: 'religious_name',
+        name: 'witch', // Đảm bảo tất cả các ký tự là chữ thường và không có khoảng trắng
         type: 3, // STRING
-        description: 'Religious name of the character',
+        description: 'Pháp danh',
         required: true,
       },
       {
-        name: 'innate_ability',
+        name: 'ability', // Đảm bảo tất cả các ký tự là chữ thường và không có khoảng trắng
         type: 3, // STRING
-        description: 'Innate ability of the character',
+        description: 'Pháp lực bẩm sinh',
         required: true,
       },
     ],
@@ -33,7 +33,7 @@ async function registerCommands(clientId, token) {
 
   try {
     console.log('Started refreshing application (/) commands.');
-    const response = await rest.put(Routes.applicationCommands(clientId), { body: commands });
+    await rest.put(Routes.applicationCommands(clientId), { body: commands });
     console.log('Successfully reloaded application (/) commands.');
   } catch (error) {
     console.error('Error registering commands:', error);
