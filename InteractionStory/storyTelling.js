@@ -1179,7 +1179,7 @@ async function handleStoryInteraction(interaction, user) {
               .setStyle(ButtonStyle.Secondary),
             new ButtonBuilder()
               .setCustomId('frozen')
-              .setLabel('Chết trân')
+              .setLabel('Đứng yên')
               .setStyle(ButtonStyle.Secondary)
           )
         ]
@@ -1282,6 +1282,230 @@ async function handleStoryInteraction(interaction, user) {
           )
         ]
       },
+
+      'frozen': {
+  embeds: [
+    new EmbedBuilder()
+      .setTitle('Chết trân')
+      .setDescription(`
+    Bạn đông cứng. Tôi không biết cảm xúc gì là thứ làm chủ cơ thể bạn khi quyết định không làm gì cả - sự sợ hãi, kiên nhẫn dò xét, chờ đợi lựa chọn khác phù hợp với tính cách bạn hơn hay đơn giản là chưa kịp tiếp nhận thông tin interactive story này muốn đem lại. Nhưng bạn lựa chọn không làm gì cả.
+
+    “Xin chào! Đang nói chuyện cùng bạn là Zircone. Treo trên cổ bạn là ngài Lioncourte.” 
+
+    Cô ấy yêu kiều cười, thu liễm chiếc lưỡi hái ba mét về. Nó biến thành khuyên kẹp cài trên tai phải cô ấy, bạn nhận ra nó - đó là biểu tượng của công hội thợ săn lớn nhất thời điểm bấy giờ. Một công hội thợ săn phù thủy.
+
+    “Bạn là?”
+    `)
+  ],
+  components: [
+    new ActionRowBuilder().addComponents(
+      new ButtonBuilder()
+        .setCustomId('calmreplied')
+        .setLabel('Thợ săn')
+        .setStyle(ButtonStyle.Secondary),
+      new ButtonBuilder()
+        .setCustomId('calmreplied')
+        .setLabel('Phù thủy')
+        .setStyle(ButtonStyle.Secondary),
+      new ButtonBuilder()
+        .setCustomId('calmreplied')
+        .setLabel('Thường dân')
+        .setStyle(ButtonStyle.Secondary),
+      new ButtonBuilder()
+        .setCustomId('calmreplied')
+        .setLabel('Nói tên bạn')
+        .setStyle(ButtonStyle.Secondary),
+      new ButtonBuilder()
+        .setCustomId('refused')
+        .setLabel('Không nói gì')
+        .setStyle(ButtonStyle.Secondary),
+      new ButtonBuilder()
+        .setCustomId('refused')
+        .setLabel('Từ chối trả lời')
+        .setStyle(ButtonStyle.Secondary)
+    )
+  ]
+},
+
+'calmreplied': {
+  embeds: [
+    new EmbedBuilder()
+      .setTitle('Kiếm cho mình một danh phận')
+      .setDescription(`
+    “Vậy hả vậy hả? Vậy cũng hơi giống nhau rồi ha. Để tôi dẫn bồ đi nhé!”
+    Cô ấy vẫy vẫy tay với bạn, xong quay người đi trước. Chân cô ấy hơi nhún nhún như đang nhảy múa trên thảm lá rụng, giống như người dẫn mấy chương trình cho trẻ em dưới 5 tuổi vậy.
+
+    Tất nhiên là nếu bạn bỏ qua được những tu sĩ đi sau lưng cô ấy. Đó là “nếu”.
+
+    “Hay là bồ muốn tự đi tới nơi đăng ký cư trú?”
+    `)
+  ],
+  components: [
+    new ActionRowBuilder().addComponents(
+      new ButtonBuilder()
+        .setCustomId('followedthem')
+        .setLabel('Đi theo')
+        .setStyle(ButtonStyle.Secondary),
+      new ButtonBuilder()
+        .setCustomId('solo')
+        .setLabel('Tự đi')
+        .setStyle(ButtonStyle.Secondary)
+    )
+  ]
+},
+'refused': {
+  embeds: [
+    new EmbedBuilder()
+      .setTitle('Từ chối')
+      .setDescription(`
+    “Haha! Bảo toàn danh tính cũng quan trọng. Nhưng đừng quá chối bỏ lòng tốt của người qua đường Z nhé, và bồ có thể đi theo chúng tôi nếu muốn đăng ký công dân tại Aerie! Mà tự đi cũng được thôi!” Nhỏ đó huơ tay phẩy phẩy. “Bình đẳng bác ái, quyết định là của bạn thôi.”
+    `)
+  ],
+  components: [
+    new ActionRowBuilder().addComponents(
+      new ButtonBuilder()
+        .setCustomId('followedthem')
+        .setLabel('Đi theo')
+        .setStyle(ButtonStyle.Secondary),
+      new ButtonBuilder()
+        .setCustomId('solo')
+        .setLabel('Tự đi')
+        .setStyle(ButtonStyle.Secondary)
+    )
+  ]
+}
+,
+
+'coop': {
+  embeds: [
+    new EmbedBuilder()
+      .setTitle('Thôi, em nghĩ lại rồi, dắt em theo')
+      .setDescription(`
+    “Haha! Vậy chúng ta đi thôi.”
+    `)
+  ],
+  components: [
+    new ActionRowBuilder().addComponents(
+      new ButtonBuilder()
+        .setCustomId('centre')
+        .setLabel('Đi đến trung tâm thung lũng Aerie')
+        .setStyle(ButtonStyle.Secondary)
+    )
+  ]
+}
+,
+
+'followedthem': {
+  embeds: [
+    new EmbedBuilder()
+      .setTitle('Đi theo')
+      .setDescription(`
+    Nhìn khuôn mặt đần ra của bạn, cô gái kia vừa đi vừa lải nhải.
+
+    “Ê nhìn thấy mấy cái cây olive này không? Nó trồng với phong á. Kỳ cục nhỉ? Thật ra cũng chẳng ai biết tại sao người ta lại trồng lẫn hai loại cây này với nhau đâu, nhưng vì thế đây được gọi là Rừng Phong đỏ Olea á.” Nhỏ nhún vai, không quên chèn theo một câu “Có khi đặt tên là Rừng Phong đỏ Olea xong mới biết Olea nghĩa là rừng Olive nên phải trồng thêm cũng nên.”
+
+    Giống như đưa cho bạn một chiếc phao cứu sinh, một tu sĩ thì thầm to nhỏ.
+
+    **“Không cần phải nghe mọi thứ cô ấy nói đâu, khi có sự kiện gì đặc biệt xảy ra, tôi sẽ ra hiệu để cậu lắng nghe.”**
+
+    “Ở trung tâm thung lũng, hơi chếch một tí là trung tâm khu dân cư… người ta gọi là Thành phố à? Thành phố Aerie. Đăng ký cư dân ở đó là được nè. Không thì bạn không có được ở lại đâu.”
+
+    “Thung lũng này có một bề dày lịch sử dài dài á. Bạn có thể tìm thấy mấy cái tàn tích luôn đó!”
+    `)
+  ],
+  components: [
+    new ActionRowBuilder().addComponents(
+      new ButtonBuilder()
+        .setCustomId('centre')
+        .setLabel('Đi đến trung tâm thung lũng Aerie')
+        .setStyle(ButtonStyle.Secondary)
+    )
+  ]
+},
+
+'centre': {
+  embeds: [
+    new EmbedBuilder()
+      .setTitle('Đi đến trung tâm thung lũng Aerie')
+      .setDescription(`
+    Có tiếng phụ họa của cô gái tóc đỏ, đường đi ngắn hơn rất nhiều. 
+    Nhưng bạn bị quá tải thông tin luôn rồi.
+
+    “Hồi thước, có nhiệm vụ đột xuất tại quận Hevigrecht. Yêu cầu có mặt trong 15 phút.”
+
+    **”Xem ra phải tách đoàn rồi.”**
+
+    “Ối thế á? Thế đi bộ không có kịp!”
+    Cô ta rút một chiếc chổi ra từ cái túi nhỏ bằng bàn tay.
+    “Lẹ lẹ thôi bạn ơi!”
+    Rồi móc bạn vào cán chổi mà lôi bạn đi. Bạn có thể thấy vài tu sĩ gượng cười vẫy tay chúc bạn lên đường bình an thượng lộ.
+    `)
+  ],
+  components: [
+    new ActionRowBuilder().addComponents(
+      new ButtonBuilder()
+        .setCustomId('fly_to_tower')
+        .setLabel('Bay đến Ma Tháp')
+        .setStyle(ButtonStyle.Secondary)
+    )
+  ]
+},
+
+'fly_to_tower': {
+  embeds: [
+    new EmbedBuilder()
+      .setTitle('Bay đến Ma Tháp')
+      .setDescription(`
+    Gió lồng lộng trời trong… hôm nay sẽ là một ngày đẹp trời,
+    Nếu bạn không bị treo trên không trung như vậy!
+
+    Tiếng hét của bạn nghẹn trong cổ họng,
+    Tay bạn cố gắng bám vào cán chổi như đu xà,
+    Nhưng bạn cũng đã loáng thoáng thấy tòa tháp cao trăm mét ở phía trước rồi.
+    `)
+  ],
+  components: [
+    new ActionRowBuilder().addComponents(
+      new ButtonBuilder()
+        .setCustomId('towerzircon')
+        .setLabel('Ma Tháp - towerzircon')
+        .setStyle(ButtonStyle.Secondary)
+    )
+  ]
+},
+
+'towerzircon': {
+  embeds: [
+    new EmbedBuilder()
+      .setTitle('Ma Tháp')
+      .setDescription(`
+    Và cô gái tóc đỏ lao thẳng qua đường cửa sổ.
+
+    “Carthelia! Tôi đã nhắc bao nhiêu lần rồi?”
+    “Vội quá vội quá ấy mà~”
+
+    Cô bé tóc tím ngồi ở bàn làm việc càu nhàu vài câu.
+
+    “Tôi để bạn ở đây là được rồi hen?”
+    Bạn tính nói không nhưng chẳng kịp trả lời, “cựu” bạn đồng hành của bạn đã chặn họng bạn lại bằng cách ném bạn về phía trước. Nhỏ làm động tác tay như thể ảo thuật gia, dù bạn thừa thấy mánh khóe cố với tay lấy tờ giấy trên bàn xuống của nhỏ.
+
+    “Đây là Khế ước. Người làm hành chính công Tangrae chỉ chấp nhận một câu trả lời, nên hãy cẩn thận với quyết định bạn đưa ra nhé!” Bạn để ý thấy nhỏ tóc đỏ đã lẹ tay cầm chổi bay nhảy ra ngoài cửa sổ lần nữa.
+
+    Những chữ cái trên tờ giấy không thuộc bảng chữ cái bạn biết, nhưng bạn có thể cảm nhận được mình hiểu ý nghĩa các từ.
+
+    Cô bé tóc tím chỉ biết thời dài, cô ấy nói,
+    “Ta là Taeriel Tangra, minatsonce thứ Tám, Thủ hộ giả của Aerie. Để trở thành công dân và được quyền ở lại thì xin hãy đồng ý với Lời Tuyên thệ của Aerie. Nhé?”
+    `)
+  ],
+  components: [
+    new ActionRowBuilder().addComponents(
+      new ButtonBuilder()
+        .setCustomId('contract')
+        .setLabel('Đọc khế ước')
+        .setStyle(ButtonStyle.Secondary)
+    )
+  ]
+},
   
   'contract': {
         embeds: [

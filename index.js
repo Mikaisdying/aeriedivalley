@@ -1,6 +1,6 @@
 require('dotenv').config();
 const { Client, GatewayIntentBits, Partials, REST, Routes } = require('discord.js');
-const { handleReaction,handleStoryInteraction } = require('./InteractionStory/storyTelling');
+const { handleReaction, handleStoryInteraction } = require('./InteractionStory/storyTelling');
 const { registerCommands, handleCharacterInteraction } = require('./CharacterData/createCharacter');
 const setupDatabase = require('./CharacterData/setupDatabase');
 
@@ -24,7 +24,6 @@ async function clearCommands(clientId, token) {
 
   try {
     console.log('Clearing application (/) commands.');
-    // Clear all global commands
     await rest.put(Routes.applicationCommands(clientId), { body: [] });
     console.log('Successfully cleared application (/) commands.');
   } catch (error) {
@@ -35,9 +34,9 @@ async function clearCommands(clientId, token) {
 client.once('ready', async () => {
   console.log('Bot is ready!');
   const CLIENT_ID = client.user.id;
+  await setupDatabase();
   await clearCommands(CLIENT_ID, process.env.TOKEN);
   await registerCommands(CLIENT_ID, process.env.TOKEN);
-  await setupDatabase;
 });
 
 client.on('messageReactionAdd', (reaction, user) => handleReaction(client, reaction, user));
